@@ -1,200 +1,300 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Para ti ❤️</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Vida Entera ❤️</title>
 
-<style>
-body{
-    margin:0;
-    font-family:Arial;
-    background:#000;
-    color:white;
-    overflow-x:hidden;
-}
+    <style>
+        :root {
+            --color-principal: #ff4d6d;
+            --color-secundario: #ffb3c1;
+            --color-fondo: #050505;
+        }
 
-/* PANTALLAS */
-.screen{
-    display:none;
-    height:100vh;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    text-align:center;
-}
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--color-fondo);
+            color: white;
+            overflow-x: hidden;
+        }
 
-.active{
-    display:flex;
-}
+        /* TRANSICIONES DE PANTALLA */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
 
-/* LOGIN */
-input{
-    padding:12px;
-    border-radius:10px;
-    border:none;
-}
+        .active { display: flex; animation: slideIn 0.8s forwards; }
 
-button{
-    margin-top:10px;
-    padding:12px 20px;
-    border:none;
-    border-radius:10px;
-    background:#ff4d6d;
-    color:white;
-    cursor:pointer;
-}
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
-/* HOME */
-.carousel{
-    width:100%;
-    height:200px;
-    overflow:hidden;
-    position:relative;
-}
+        /* DISEÑO DE TEXTO ANIMADO */
+        h2 { 
+            color: var(--color-secundario); 
+            font-size: 2rem;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.6);
+            margin-bottom: 10px;
+        }
 
-.carousel img{
-    position:absolute;
-    width:100%;
-    height:200px;
-    object-fit:cover;
-    opacity:0;
-    transition:1s;
-}
+        p { 
+            max-width: 450px; 
+            font-size: 1.1rem; 
+            line-height: 1.6; 
+            color: #efefef;
+            animation: fadeInText 2s;
+        }
 
-.carousel img.active{
-    opacity:1;
-}
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-.container{
-    display:flex;
-    flex-wrap:wrap;
-}
+        /* FOTOS Y MARCOS */
+        .photo-frame {
+            width: 260px;
+            height: 350px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+            margin: 20px auto;
+            transition: transform 0.5s;
+        }
 
-.card{
-    flex:1;
-    padding:10px;
-}
+        .photo-frame:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
 
-.card img{
-    width:100%;
-    border-radius:15px;
-    box-shadow:0 0 10px pink;
-}
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-/* FINAL */
-.heart{
-    position:absolute;
-    color:pink;
-    animation:subir 5s linear infinite;
-}
+        /* BOTONES INTERACTIVOS */
+        .btn {
+            margin-top: 25px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            background: var(--color-principal);
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 77, 109, 0.5);
+            animation: heartbeat 2s infinite;
+        }
 
-@keyframes subir{
-    from{transform:translateY(0);}
-    to{transform:translateY(-600px);}
-}
-</style>
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
+        .btn:active { transform: scale(0.9); }
+
+        /* CARRUSELES */
+        .carousel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%; /* Carrusel circular para variar */
+            overflow: hidden;
+            position: relative;
+            border: 5px solid var(--color-principal);
+        }
+
+        .carousel img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: 1s;
+        }
+
+        .carousel img.active { opacity: 1; }
+
+        /* DECORACIÓN DE FONDO */
+        .heart-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart-icon {
+            position: absolute;
+            animation: float Up 5s linear forwards;
+        }
+
+        @keyframes floatUp {
+            to { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login" class="screen active">
-    <h2>Amor 💙</h2>
-    <p>Ingresa nuestra fecha</p>
-    <input type="password" id="pass" placeholder="18/02/2026">
-    <button onclick="entrar()">Entrar</button>
-    <p id="error" style="color:red;"></p>
+<div class="heart-bg" id="bg-hearts"></div>
+
+<div id="p1" class="screen active">
+    <h2>Nuestra Fecha Mágica 💙</h2>
+    <input type="text" id="pass" placeholder="DD/MM/AAAA">
+    <button class="btn" onclick="validar()">Abrir mi corazón</button>
+    <p id="error" style="color:red; margin-top:10px;"></p>
 </div>
 
-<!-- HOME -->
-<div id="home" class="screen">
-
+<div id="p2" class="screen">
+    <h2>¡Hola, Mi Vida! ❤️</h2>
     <div class="carousel">
         <img src="img1.jpg" class="active">
         <img src="img2.jpg">
         <img src="img3.jpg">
     </div>
-
-    <div class="container">
-
-        <div class="card">
-            <img src="img1.jpg">
-            <p>Contigo todo se siente bonito 💙</p>
-        </div>
-
-        <div class="card">
-            <img src="img2.jpg">
-            <p>Aunque estés lejos, sigues aquí conmigo 😔</p>
-        </div>
-
-        <div class="card">
-            <img src="img3.jpg">
-            <p>Eres muy importante para mí ❤️</p>
-        </div>
-
-    </div>
-
-    <p>No importa la distancia… yo sigo firme contigo 💙</p>
-
-    <button onclick="final()">Abrir</button>
-
+    <p>Hoy preparé algo especial para ti. No es mucho, pero va con todo mi amor.</p>
+    <button class="btn" onclick="nav('p2', 'p3')">Empezar el viaje ✨</button>
 </div>
 
-<!-- FINAL -->
-<div id="final" class="screen">
-    <h2>
-        Amor… 💙<br><br>
-        sé que estás lejos…<br>
-        pero lo que siento por ti es real ❤️<br><br>
-        18/02/2026 💕
-    </h2>
+<div id="p3" class="screen">
+    <h2>Donde todo empezó... 📖</h2>
+    <div class="photo-frame">
+        <img src="img3.jpg">
+    </div>
+    <p>¿Recuerdas cómo empezamos? Cada palabra tuya se quedó grabada en mí desde el primer día.</p>
+    <button class="btn" onclick="nav('p3', 'p4')">Continuar...</button>
+</div>
+
+<div id="p4" class="screen">
+    <h2>Tu sonrisa es mi luz 🌟</h2>
+    <div class="photo-frame">
+        <img src="img1.jpg">
+    </div>
+    <p>No hay distancia que pueda apagar lo que siento cuando te veo, aunque sea por una pantalla.</p>
+    <button class="btn" onclick="nav('p4', 'p5')">¿Sabes qué más?</button>
+</div>
+
+<div id="p5" class="screen">
+    <h2>Más que palabras 🤝</h2>
+    <div class="carousel" style="border-radius: 20px;">
+        <img src="img2.jpg" class="active">
+        <img src="img3.jpg">
+        <img src="img1.jpg">
+    </div>
+    <p>Contigo he aprendido que el amor no se trata de estar cerca, sino de no querer irse nunca.</p>
+    <button class="btn" onclick="nav('p5', 'p6')">Sigue bajando...</button>
+</div>
+
+<div id="p6" class="screen">
+    <h2>Nuestros Tesoros 💎</h2>
+    <div class="photo-frame">
+        <img src="img2.jpg">
+    </div>
+    <p>Cada captura, cada audio y cada risa son los tesoros que guardo con más llave.</p>
+    <button class="btn" onclick="nav('p6', 'p7')">Casi llegamos...</button>
+</div>
+
+<div id="p7" class="screen">
+    <h2>Mi Promesa 💍</h2>
+    <div class="photo-frame">
+        <img src="img3.jpg">
+    </div>
+    <p>Prometo estar aquí, firme, cuidando este sentimiento que nos une a pesar de todo.</p>
+    <button class="btn" onclick="nav('p7', 'p8')">Un poquito más...</button>
+</div>
+
+<div id="p8" class="screen">
+    <h2>Mirando al Mañana 🚀</h2>
+    <div class="carousel">
+        <img src="img1.jpg" class="active">
+        <img src="img2.jpg">
+        <img src="img3.jpg">
+    </div>
+    <p>Me imagino mil cosas contigo, y todas terminan con un beso de verdad.</p>
+    <button class="btn" onclick="nav('p8', 'p9')">Dale clic...</button>
+</div>
+
+<div id="p9" class="screen">
+    <h2>Gracias por existir ❤️</h2>
+    <div class="photo-frame">
+        <img src="img1.jpg">
+    </div>
+    <p>No importa los kilómetros, mi lugar seguro siempre serás tú. ¡Te amo!</p>
+    <button class="btn" onclick="nav('p9', 'p10')">Última sorpresa 🎁</button>
+</div>
+
+<div id="p10" class="screen">
+    <h2 style="font-size: 3rem;">💕 18/02/2026 💕</h2>
+    <p>Eres y serás siempre tú. Gracias por hacerme el más feliz del mundo.</p>
+    <div style="display: flex; gap: 10px;">
+        <div class="photo-frame" style="width: 100px; height: 100px;"><img src="img1.jpg"></div>
+        <div class="photo-frame" style="width: 100px; height: 100px;"><img src="img2.jpg"></div>
+        <div class="photo-frame" style="width: 100px; height: 100px;"><img src="img3.jpg"></div>
+    </div>
+    <button class="btn" onclick="location.reload()">Ver de nuevo 💙</button>
 </div>
 
 <script>
+    const FECHA_CORRECTA = "18/02/2026";
 
-/* LOGIN */
-function entrar(){
-    let p = document.getElementById("pass").value;
-
-    if(p === "18/02/2026"){
-        cambiar("login","home");
-    } else {
-        document.getElementById("error").innerText="Fecha incorrecta 😔";
+    function validar() {
+        let input = document.getElementById("pass").value;
+        if(input === FECHA_CORRECTA) {
+            nav('p1', 'p2');
+            iniciarLluvia();
+        } else {
+            document.getElementById("error").innerText = "Ups... esa no es la fecha especial 😔";
+        }
     }
-}
 
-/* CAMBIAR PANTALLA */
-function cambiar(a,b){
-    document.getElementById(a).classList.remove("active");
-    document.getElementById(b).classList.add("active");
-}
+    function nav(ocultar, mostrar) {
+        document.getElementById(ocultar).classList.remove("active");
+        document.getElementById(mostrar).classList.add("active");
+        window.scrollTo(0,0);
+    }
 
-/* IR FINAL */
-function final(){
-    cambiar("home","final");
+    // Lógica para todos los carruseles
+    function iniciarCarruseles() {
+        const carousels = document.querySelectorAll(".carousel");
+        carousels.forEach(car => {
+            let imgs = car.querySelectorAll("img");
+            let index = 0;
+            setInterval(() => {
+                imgs[index].classList.remove("active");
+                index = (index + 1) % imgs.length;
+                imgs[index].classList.add("active");
+            }, 3000);
+        });
+    }
+    iniciarCarruseles();
 
-    setInterval(()=>{
-        let h=document.createElement("div");
-        h.className="heart";
-        h.innerHTML="❤️";
-        h.style.left=Math.random()*100+"vw";
-
-        document.body.appendChild(h);
-
-        setTimeout(()=>h.remove(),5000);
-    },300);
-}
-
-/* CARRUSEL */
-let i=0;
-let imgs=document.querySelectorAll(".carousel img");
-
-setInterval(()=>{
-    imgs[i].classList.remove("active");
-    i=(i+1)%imgs.length;
-    imgs[i].classList.add("active");
-},3000);
-
+    function iniciarLluvia() {
+        const bg = document.getElementById("bg-hearts");
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart-icon";
+            heart.innerHTML = ["❤️","💙","💕","💖"][Math.floor(Math.random()*4)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+            heart.style.top = "100vh";
+            bg.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }, 300);
+    }
 </script>
 
 </body>
